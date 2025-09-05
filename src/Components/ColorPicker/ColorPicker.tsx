@@ -10,7 +10,7 @@ const ColorPicker: React.FC<Props> = ({ color, setColor }) => {
   return (
     <BlockPicker
       triangle="hide"
-      colors={["#CCF9C2", "#2C301D"]}
+      colors={["#45a6ff", "#1b1f32"]}
       color={color}
       onChange={(color) => {
         setColor(color.hex);
