@@ -2,13 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ImageConverter.scss";
 import Panel from "../Panel/Panel";
 
-interface Props {
-  initialSize?: number;
-  initialInverted?: boolean;
-  initialColor?: string;
-}
-
-const ImageConverter: React.FC<Props> = ({}) => {
+const ImageConverter: React.FC = () => {
   const [svgContent, setSvgContent] = useState<string>("");
   const [size, setSize] = useState(9);
   const [sensetivity, setSensetivity] = useState(20);
@@ -23,27 +17,6 @@ const ImageConverter: React.FC<Props> = ({}) => {
   const greenColor = "#61c55d";
   const pineColor = "#ca9462";
   const whiteColor = "#fffffa";
-
-  useEffect(() => {
-    if (imageFile) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => processImage(img);
-        img.src = e.target?.result as string;
-      };
-      reader.readAsDataURL(imageFile);
-      let name = imageFile.name.split(".");
-      setFilename(name[0]);
-    }
-  }, [imageFile, size, inverted, color, maxImageSize, sensetivity, brightness]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setImageFile(event.target.files[0]);
-    }
-  };
-
   const processImage = (img: HTMLImageElement) => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d")!;
@@ -127,6 +100,26 @@ const ImageConverter: React.FC<Props> = ({}) => {
 
     svgContent += "</svg>";
     setSvgContent(svgContent);
+  };
+
+  useEffect(() => {
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => processImage(img);
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(imageFile);
+      let name = imageFile.name.split(".");
+      setFilename(name[0]);
+    }
+  }, [imageFile, size, inverted, color, maxImageSize, sensetivity, brightness]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setImageFile(event.target.files[0]);
+    }
   };
 
   const handleDownload = () => {
