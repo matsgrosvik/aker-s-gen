@@ -11,7 +11,7 @@ interface Props {
 const ImageConverter: React.FC<Props> = ({}) => {
   const [svgContent, setSvgContent] = useState<string>("");
   const [size, setSize] = useState(9);
-  const [sensetivity, setSensetivity] = useState(2);
+  const [sensetivity, setSensetivity] = useState(20);
   const [brightness, setBrightness] = useState(0.45);
   const [inverted, setInverted] = useState(false);
   const [color, setColor] = useState("#1b1f32");
@@ -19,10 +19,10 @@ const ImageConverter: React.FC<Props> = ({}) => {
   const [maxImageSize, setMaxImageSize] = useState(800);
   const [fileName, setFilename] = useState("");
 
-  const blueColor = "#45a6ff";
-  const greenColor = "#76d47a";
-  const pineColor = "#ca9a68";
-  const whiteColor = "#fefdf8";
+  const blueColor = "#5d9dda";
+  const greenColor = "#61c55d";
+  const pineColor = "#ca9462";
+  const whiteColor = "#fffffa";
 
   useEffect(() => {
     if (imageFile) {
@@ -83,30 +83,39 @@ const ImageConverter: React.FC<Props> = ({}) => {
           const g = pixels[index + 1];
           const b = pixels[index + 2];
           const a = pixels[index + 3];
+          // const rgb = 0.2126 * r + 0.7152 * g + 0.0722 * b;
           const rgb = (r + g + b) / 3;
 
           // If alpha is 0 (fully transparent) or pixel is completely white, skip drawing the circle
           if (a === 0 || (r === 255 && g === 255 && b === 255)) {
             continue;
           }
+          if (!inverted) {
+          }
 
-          if (rgb < 255 - sensetivity) {
-            // Assign color based on brightness
-            let fillColor = blueColor;
-            if (rgb > 190) {
+          if (rgb < 255 - sensetivity && rgb > 35) {
+            // Assign color based on brightness, skip darkest colors
+            let fillColor = whiteColor;
+            const t1 = 44;
+            const t2 = 83;
+            const t3 = 160;
+
+            if (rgb < t1) {
               fillColor = greenColor;
-            } else if (rgb > 140) {
-              fillColor = whiteColor;
-            } else if (rgb > 80) {
+            } else if (rgb < t2) {
+              fillColor = blueColor;
+            } else if (rgb < t3) {
               fillColor = pineColor;
+            } else {
+              fillColor = whiteColor;
             }
 
             // Invert colors if inverted is true
             if (inverted) {
-              if (fillColor === blueColor) fillColor = whiteColor;
-              else if (fillColor === greenColor) fillColor = pineColor;
-              else if (fillColor === pineColor) fillColor = greenColor;
-              else if (fillColor === whiteColor) fillColor = blueColor;
+              if (fillColor === greenColor) fillColor = whiteColor;
+              else if (fillColor === blueColor) fillColor = pineColor;
+              else if (fillColor === pineColor) fillColor = blueColor;
+              else if (fillColor === whiteColor) fillColor = greenColor;
             }
 
             const radius = size * brightness;

@@ -81,13 +81,13 @@ const Panel: React.FC<Props> = ({
         </div>
         <div className="slider">
           <label className="slider-header">
-            Hexagon størrelse:
+            Sirkel størrelse:
             <span>{size}</span>
           </label>
           <input
             type="range"
             min="3"
-            step="0.5"
+            step="1"
             max="20"
             value={size}
             onChange={(e) => setSize(Number(e.target.value))}
@@ -102,7 +102,7 @@ const Panel: React.FC<Props> = ({
             type="range"
             min="0"
             step="0.5"
-            max="20"
+            max="200"
             value={sensetivity}
             onChange={(e) => setSensetivity(Number(e.target.value))}
           />
