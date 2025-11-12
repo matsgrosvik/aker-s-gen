@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import "./Panel.scss";
-// import Image from "./dmp-logo-desktop.svg";
 import ImageDark from "./Aker-Security-logo-RGB_Light.svg";
 import Image from "./Aker-Security-logo-RGB_Dark.svg";
 
@@ -47,7 +46,7 @@ const Panel: React.FC<Props> = ({
   return (
     <div className="panel" style={{ backgroundColor: color }}>
       <div>
-        <img src={color === "#45a6ff" ? Image : ImageDark} />
+        <img src={color === "#45a6ff" ? Image : ImageDark} alt="logo" />
         <div className="upload">
           <label htmlFor="imageUpload" className="upload-label">
             Last opp bilde her
