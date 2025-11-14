@@ -5,7 +5,7 @@ import Panel from "../Panel/Panel";
 const ImageConverter: React.FC = () => {
   const [svgContent, setSvgContent] = useState<string>("");
   const [size, setSize] = useState(3);
-  const [sensetivity, setSensetivity] = useState(0);
+  const [sensetivity, setSensetivity] = useState(35);
   const [brightness, setBrightness] = useState(0.45);
   const [inverted, setInverted] = useState(false);
   const [color, setColor] = useState("#45a6ff");
@@ -13,10 +13,30 @@ const ImageConverter: React.FC = () => {
   const [maxImageSize, setMaxImageSize] = useState(800);
   const [fileName, setFilename] = useState("");
 
-  const blueColor = "#5d9dda";
-  const greenColor = "#61c55d";
-  const pineColor = "#ca9462";
-  const whiteColor = "#fffffa";
+  const blueColor = "#45A6FF";
+  const greenColor = "#76D47A";
+  const pineColor = "#CA9A68";
+  const whiteColor = "#FEFDF8";
+
+  // Color ranking: darkest to lightest (default matches current thresholds)
+  const [colorRanking, setColorRanking] = useState<string[]>([
+    greenColor,
+    blueColor,
+    pineColor,
+    whiteColor,
+  ]);
+
+  // Color dominance: percentage of brightness range each color occupies
+  // Default values match original thresholds: 44, 83, 160 out of 255
+  // Green: 0-44 (17.3%), Blue: 44-83 (15.3%), Pine: 83-160 (30.2%), White: 160-255 (37.3%)
+  const [colorDominance, setColorDominance] = useState<{
+    [key: string]: number;
+  }>({
+    [greenColor]: 17.3,
+    [blueColor]: 15.3,
+    [pineColor]: 30.2,
+    [whiteColor]: 37.3,
+  });
 
   const processImage = useCallback(
     (img: HTMLImageElement) => {
@@ -65,32 +85,34 @@ const ImageConverter: React.FC = () => {
             if (a === 0 || (r === 255 && g === 255 && b === 255)) {
               continue;
             }
-            if (!inverted) {
-            }
 
-            if (rgb < 255 - sensetivity && rgb > 35) {
-              // Assign color based on brightness, skip darkest colors
-              let fillColor = whiteColor;
-              const t1 = 44;
-              const t2 = 83;
-              const t3 = 160;
+            // Enhanced sensitivity: cut off light colors in normal mode, dark colors in inverted mode
+            const shouldSkipPixel = inverted
+              ? rgb < sensetivity // In inverted mode, skip dark pixels
+              : rgb > 255 - sensetivity || rgb < sensetivity; // In normal mode, skip bright AND dark pixels
+
+            if (!shouldSkipPixel) {
+              // Get the effective color ranking (reversed if inverted)
+              const effectiveRanking = inverted
+                ? [...colorRanking].reverse()
+                : colorRanking;
+
+              // Calculate dynamic thresholds based on color dominance
+              const t1 = (colorDominance[effectiveRanking[0]] / 100) * 255;
+              const t2 = t1 + (colorDominance[effectiveRanking[1]] / 100) * 255;
+              const t3 = t2 + (colorDominance[effectiveRanking[2]] / 100) * 255;
+
+              // Assign color based on brightness thresholds
+              let fillColor = effectiveRanking[3]; // Default to lightest
 
               if (rgb < t1) {
-                fillColor = greenColor;
+                fillColor = effectiveRanking[0]; // Darkest
               } else if (rgb < t2) {
-                fillColor = blueColor;
+                fillColor = effectiveRanking[1]; // 2nd darkest
               } else if (rgb < t3) {
-                fillColor = pineColor;
+                fillColor = effectiveRanking[2]; // 2nd lightest
               } else {
-                fillColor = whiteColor;
-              }
-
-              // Invert colors if inverted is true
-              if (inverted) {
-                if (fillColor === greenColor) fillColor = whiteColor;
-                else if (fillColor === blueColor) fillColor = pineColor;
-                else if (fillColor === pineColor) fillColor = blueColor;
-                else if (fillColor === whiteColor) fillColor = greenColor;
+                fillColor = effectiveRanking[3]; // Lightest
               }
 
               const radius = size * brightness;
@@ -109,10 +131,8 @@ const ImageConverter: React.FC = () => {
       brightness,
       inverted,
       maxImageSize,
-      blueColor,
-      greenColor,
-      pineColor,
-      whiteColor,
+      colorRanking,
+      colorDominance,
     ]
   );
 
@@ -204,6 +224,14 @@ const ImageConverter: React.FC = () => {
         downLoadPng={downLoadPng}
         handleDownload={handleDownload}
         fileName={fileName}
+        colorRanking={colorRanking}
+        setColorRanking={setColorRanking}
+        colorDominance={colorDominance}
+        setColorDominance={setColorDominance}
+        blueColor={blueColor}
+        greenColor={greenColor}
+        pineColor={pineColor}
+        whiteColor={whiteColor}
       />
       {svgContent && (
         <div dangerouslySetInnerHTML={{ __html: svgContent }} id="svg" />
