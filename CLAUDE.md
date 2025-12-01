@@ -32,21 +32,38 @@ The main conversion logic lives in [src/Components/ImageConverter/ImageConverter
 5. **SVG Generation** → Loop through image in hexagonal grid pattern:
    - Sample pixel at each hexagon center point
    - Calculate RGB average to determine brightness
-   - Skip transparent or white pixels
-   - Assign color based on brightness thresholds (4 color palette)
-   - Apply color inversion if enabled
+   - Skip transparent or white pixels (alpha=0 or RGB=255,255,255)
+   - Apply sensitivity filter (skip pixels based on brightness thresholds)
+   - Assign color based on dynamic thresholds calculated from color dominance
+   - Apply color inversion if enabled (reverses the color ranking array)
    - Generate `<circle>` SVG elements with calculated radius
 6. **Export** → Download as SVG (direct) or PNG (via canvas conversion)
 
 ### Color System
 
-The application uses a hardcoded 4-color palette in [ImageConverter.tsx](src/Components/ImageConverter/ImageConverter.tsx):
-- **Blue** (`#45a6ff`): darkest areas (RGB < 80)
-- **Pine** (`#ca9a68`): mid-dark areas (80 ≤ RGB < 140)
-- **White** (`#fefdf8`): mid-light areas (140 ≤ RGB < 190)
-- **Green** (`#76d47a`): lightest areas (RGB ≥ 190)
+The application uses a 4-color palette with **dynamic threshold calculation**:
 
-Color inversion reverses the palette mapping: blue ↔ white, green ↔ pine.
+**Fixed Color Definitions:**
+- **Blue Sky** (`#45A6FF`)
+- **Bright Green** (`#76D47A`)
+- **Forest Pine** (`#CA9A68`)
+- **White** (`#FEFDF8`)
+
+**Color Ranking System:**
+Colors can be arranged in any order from darkest to lightest via drag-and-drop UI. Default ranking (darkest→lightest):
+1. Green → 2. Blue → 3. Pine → 4. White
+
+**Color Dominance System:**
+Each color's dominance percentage determines what portion of the 0-255 brightness range it occupies. Default dominance values:
+- Green: 17.3% (threshold: 0-44)
+- Blue: 15.3% (threshold: 44-83)
+- Pine: 30.2% (threshold: 83-160)
+- White: 37.3% (threshold: 160-255)
+
+Dominance percentages auto-normalize to always total 100%. When one color's dominance is adjusted, the difference is distributed proportionally among other colors.
+
+**Color Inversion:**
+When inverted mode is enabled, the `colorRanking` array is reversed before applying thresholds. This flips the brightness-to-color mapping (dark pixels get light colors, light pixels get dark colors).
 
 ### Component Structure
 

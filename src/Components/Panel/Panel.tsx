@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import "./Panel.scss";
-import ImageDark from "./Aker-Security-logo-RGB_Light.svg";
-import Image from "./Aker-Security-logo-RGB_Dark.svg";
+import Image from "./Aker-Security-logo-RGB_Light.svg";
 
 interface Props {
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  color: string;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
   size: number;
   setSize: React.Dispatch<React.SetStateAction<number>>;
   maxImageSize: number;
@@ -35,8 +32,6 @@ interface Props {
 
 const Panel: React.FC<Props> = ({
   handleFileChange,
-  color,
-  setColor,
   maxImageSize,
   setMaxImageSize,
   size,
@@ -136,9 +131,10 @@ const Panel: React.FC<Props> = ({
   };
 
   return (
-    <div className="panel" style={{ backgroundColor: color }}>
+    // <div className="panel" style={{ backgroundColor: color }}>
+    <div className="panel" style={{ backgroundColor: "#006fd6" }}>
       <div>
-        <img src={color === "#45a6ff" ? Image : ImageDark} alt="logo" />
+        <img src={Image} alt="logo" />
         <div className="upload">
           <label htmlFor="imageUpload" className="upload-label">
             Upload image here
@@ -275,22 +271,6 @@ const Panel: React.FC<Props> = ({
             <span className="checkmark"></span>
             Invert colors
           </label>
-          <button
-            className={`color-button ${color === "#1b1f32" ? "selected" : ""}`}
-            onClick={() => setColor("#1b1f32")}>
-            <span
-              className="color-swatch"
-              style={{ backgroundColor: "#1b1f32" }}></span>
-            <span className="color-label">Light</span>
-          </button>
-          <button
-            className={`color-button ${color === "#45a6ff" ? "selected" : ""}`}
-            onClick={() => setColor("#45a6ff")}>
-            <span
-              className="color-swatch"
-              style={{ backgroundColor: "#45a6ff" }}></span>
-            <span className="color-label">Dark</span>
-          </button>
         </div>
       </div>
       {svgContent && (

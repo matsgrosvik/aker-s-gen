@@ -8,7 +8,6 @@ const ImageConverter: React.FC = () => {
   const [sensetivity, setSensetivity] = useState(35);
   const [brightness, setBrightness] = useState(0.45);
   const [inverted, setInverted] = useState(false);
-  const [color, setColor] = useState("#45a6ff");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [maxImageSize, setMaxImageSize] = useState(800);
   const [fileName, setFilename] = useState("");
@@ -203,13 +202,9 @@ const ImageConverter: React.FC = () => {
   };
 
   return (
-    <div
-      className={`img-converter ${color === "#45a6ff" ? "light" : "dark"}`}
-      style={{ display: "flex" }}>
+    <div className="img-converter light" style={{ display: "flex" }}>
       <Panel
         handleFileChange={handleFileChange}
-        color={color}
-        setColor={setColor}
         maxImageSize={maxImageSize}
         setMaxImageSize={setMaxImageSize}
         size={size}

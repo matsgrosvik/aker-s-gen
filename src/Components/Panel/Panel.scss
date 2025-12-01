@@ -361,7 +361,7 @@
 .light .panel {
 
   .checkbox-wrapper {
-    color: black;
+    color: white;
 
   }
 
@@ -388,7 +388,7 @@
   }
 
   .color-label {
-    color: black;
+    color: white;
   }
 
   .color-button.selected {
@@ -405,7 +405,7 @@
 
 
   .upload-label-uploaded {
-    color: black;
+    color: white;
   }
 
   .upload-label {
@@ -419,12 +419,12 @@
 
   .upload-label:hover {
     background-color: #45a6ff;
-    color: black;
+    color: white;
     border: #1b1f32 2px solid;
   }
 
   .slider-header {
-    color: #1b1f32;
+    color: white;
   }
 
   input[type="range"] {
@@ -462,22 +462,22 @@
   }
 
   .download-button:hover {
-    color: #1b1f32;
+    color: white;
     background-color: #45a6ff;
     border: #1b1f32 2px solid;
   }
 
   .radio-label {
-    color: #1b1f32;
+    color: white;
   }
 
   // Light theme for color ranking
   .section-header {
-    color: #1b1f32;
+    color: white;
   }
 
   .section-hint {
-    color: rgba(27, 31, 50, 0.7);
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .color-rank-item {
@@ -499,23 +499,23 @@
   }
 
   .color-name {
-    color: #1b1f32;
+    color: white;
   }
 
   .color-level {
-    color: rgba(27, 31, 50, 0.7);
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .drag-handle {
-    color: #1b1f32;
+    color: white;
   }
 
   .color-ranking-section,
   .color-dominance-section {
-    border-top-color: rgba(0, 0, 0, 0.2);
+    border-top-color: rgba(255, 255, 255, 0.2);
   }
 
   .dominance-bar {
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 }
