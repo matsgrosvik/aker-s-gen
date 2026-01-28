@@ -6,12 +6,12 @@ interface Props {
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   size: number;
   setSize: React.Dispatch<React.SetStateAction<number>>;
+  gap: number;
+  setGap: React.Dispatch<React.SetStateAction<number>>;
   maxImageSize: number;
   setMaxImageSize: React.Dispatch<React.SetStateAction<number>>;
   inverted: boolean;
   setInverted: React.Dispatch<React.SetStateAction<boolean>>;
-  brightness: number;
-  setBrightness: React.Dispatch<React.SetStateAction<number>>;
   sensetivity: number;
   setSensetivity: React.Dispatch<React.SetStateAction<number>>;
   svgContent: string;
@@ -36,11 +36,11 @@ const Panel: React.FC<Props> = ({
   setMaxImageSize,
   size,
   setSize,
+  gap,
+  setGap,
   inverted,
   setInverted,
-  brightness,
   sensetivity,
-  setBrightness,
   setSensetivity,
   svgContent,
   downLoadPng,
@@ -103,11 +103,11 @@ const Panel: React.FC<Props> = ({
 
     // Distribute the difference among other colors proportionally
     const otherColors = Object.keys(colorDominance).filter(
-      (c) => c !== colorHex
+      (c) => c !== colorHex,
     );
     const totalOtherDominance = otherColors.reduce(
       (sum, c) => sum + colorDominance[c],
-      0
+      0,
     );
 
     if (totalOtherDominance > 0) {
@@ -115,7 +115,7 @@ const Panel: React.FC<Props> = ({
         const proportion = colorDominance[c] / totalOtherDominance;
         newDominance[c] = Math.max(
           5,
-          colorDominance[c] - difference * proportion
+          colorDominance[c] - difference * proportion,
         );
       });
     }
@@ -152,7 +152,7 @@ const Panel: React.FC<Props> = ({
             </span>
           )}
         </div>
-        <div className="slider">
+        {/* <div className="slider">
           <label className="slider-header">
             Image Width:
             <span>{maxImageSize}px</span>
@@ -173,13 +173,27 @@ const Panel: React.FC<Props> = ({
           </label>
           <input
             type="range"
-            min="3"
-            step="1"
+            min="0.1"
+            step="0.1"
             max="20"
             value={size}
             onChange={(e) => setSize(Number(e.target.value))}
           />
-        </div>
+        </div> */}
+        {/* <div className="slider">
+          <label className="slider-header">
+            Circle Gap:
+            <span>{gap}</span>
+          </label>
+          <input
+            type="range"
+            min="0"
+            step="0.1"
+            max="5"
+            value={gap}
+            onChange={(e) => setGap(Number(e.target.value))}
+          />
+        </div> */}
         <div className="slider">
           <label className="slider-header">
             Sensitivity:
@@ -198,6 +212,11 @@ const Panel: React.FC<Props> = ({
         {/* Color Ranking Section */}
         <div className="color-ranking-section">
           <h3 className="section-header">Color Ranking</h3>
+          <p className="section-description">
+            Define which colors represent dark vs light areas in your image. The
+            first color will be used for the darkest pixels, the last for the
+            lightest.
+          </p>
           <p className="section-hint">Drag and drop to change order</p>
           <div className="color-ranking-list">
             {colorRanking.map((colorHex, index) => (
@@ -233,6 +252,11 @@ const Panel: React.FC<Props> = ({
         {/* Color Dominance Section */}
         <div className="color-dominance-section">
           <h3 className="section-header">Color Dominance</h3>
+          <p className="section-description">
+            Set the threshold range for each color. A higher percentage means
+            that color will cover more pixels within its dark-to-light range
+            based on its ranking position above.
+          </p>
           {colorRanking.map((colorHex, index) => (
             <div key={colorHex} className="slider">
               <label className="slider-header">

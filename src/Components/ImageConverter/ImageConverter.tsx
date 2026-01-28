@@ -4,18 +4,19 @@ import Panel from "../Panel/Panel";
 
 const ImageConverter: React.FC = () => {
   const [svgContent, setSvgContent] = useState<string>("");
-  const [size, setSize] = useState(3);
+  const [size, setSize] = useState(2);
+  const [gap, setGap] = useState(1);
   const [sensetivity, setSensetivity] = useState(35);
-  const [brightness, setBrightness] = useState(0.45);
+  const brightness = 0.45;
   const [inverted, setInverted] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [maxImageSize, setMaxImageSize] = useState(800);
+  const [maxImageSize, setMaxImageSize] = useState(1000);
   const [fileName, setFilename] = useState("");
 
-  const blueColor = "#45A6FF";
-  const greenColor = "#76D47A";
-  const pineColor = "#CA9A68";
-  const whiteColor = "#FEFDF8";
+  const blueColor = "#46A2FC";
+  const greenColor = "#56A76B";
+  const pineColor = "#E49249";
+  const whiteColor = "#FFFEF9";
 
   // Color ranking: darkest to lightest (default matches current thresholds)
   const [colorRanking, setColorRanking] = useState<string[]>([
@@ -58,8 +59,8 @@ const ImageConverter: React.FC = () => {
       let svgContent = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
       svgContent += `<rect width="100%" height="100%" fill="none"/>`;
 
-      const hexHeight = size;
-      const hexWidth = size;
+      const hexHeight = size + gap;
+      const hexWidth = size + gap;
 
       for (let y = 0; y < height + hexHeight; y += hexHeight) {
         for (let x = hexWidth / 2; x < width + hexWidth; x += hexWidth) {
@@ -126,13 +127,14 @@ const ImageConverter: React.FC = () => {
     },
     [
       size,
+      gap,
       sensetivity,
       brightness,
       inverted,
       maxImageSize,
       colorRanking,
       colorDominance,
-    ]
+    ],
   );
 
   useEffect(() => {
@@ -209,11 +211,11 @@ const ImageConverter: React.FC = () => {
         setMaxImageSize={setMaxImageSize}
         size={size}
         setSize={setSize}
+        gap={gap}
+        setGap={setGap}
         inverted={inverted}
         setInverted={setInverted}
-        brightness={brightness}
         sensetivity={sensetivity}
-        setBrightness={setBrightness}
         setSensetivity={setSensetivity}
         svgContent={svgContent}
         downLoadPng={downLoadPng}
