@@ -24,6 +24,8 @@ interface Props {
   setColorDominance: React.Dispatch<
     React.SetStateAction<{ [key: string]: number }>
   >;
+  mode: string;
+  onModeChange: (mode: string) => void;
   blueColor: string;
   greenColor: string;
   pineColor: string;
@@ -50,6 +52,8 @@ const Panel: React.FC<Props> = ({
   setColorRanking,
   colorDominance,
   setColorDominance,
+  mode,
+  onModeChange,
   blueColor,
   greenColor,
   pineColor,
@@ -152,48 +156,66 @@ const Panel: React.FC<Props> = ({
             </span>
           )}
         </div>
-        {/* <div className="slider">
-          <label className="slider-header">
-            Image Width:
-            <span>{maxImageSize}px</span>
-          </label>
-          <input
-            type="range"
-            min="100"
-            max="4000"
-            step="50"
-            value={maxImageSize}
-            onChange={(e) => setMaxImageSize(Number(e.target.value))}
-          />
+        <div className="mode-section">
+          <label className="slider-header section-header">Configuration:</label>
+          <p className="section-description">
+            Standard mode follows the official brand guidelines. Testing mode
+            allows you to experiment with custom image processing parameters.
+          </p>
+          <select
+            className="mode-select"
+            value={mode}
+            onChange={(e) => onModeChange(e.target.value)}>
+            <option value="standard">Standard</option>
+            <option value="creative">Testing</option>
+          </select>
         </div>
-        <div className="slider">
-          <label className="slider-header">
-            Circle Size:
-            <span>{size}</span>
-          </label>
-          <input
-            type="range"
-            min="0.1"
-            step="0.1"
-            max="20"
-            value={size}
-            onChange={(e) => setSize(Number(e.target.value))}
-          />
-        </div> */}
-        {/* <div className="slider">
-          <label className="slider-header">
-            Circle Gap:
-            <span>{gap}</span>
-          </label>
-          <input
-            type="range"
-            min="0"
-            step="0.1"
-            max="5"
-            value={gap}
-            onChange={(e) => setGap(Number(e.target.value))}
-          />
-        </div> */}
+        {mode === "creative" && (
+          <>
+            <div className="slider">
+              <label className="slider-header">
+                Image Width:
+                <span>{maxImageSize}px</span>
+              </label>
+              <input
+                type="range"
+                min="100"
+                max="4000"
+                step="50"
+                value={maxImageSize}
+                onChange={(e) => setMaxImageSize(Number(e.target.value))}
+              />
+            </div>
+            <div className="slider">
+              <label className="slider-header">
+                Circle Size:
+                <span>{size}</span>
+              </label>
+              <input
+                type="range"
+                min="0.1"
+                step="0.1"
+                max="20"
+                value={size}
+                onChange={(e) => setSize(Number(e.target.value))}
+              />
+            </div>
+            <div className="slider">
+              <label className="slider-header">
+                Circle Gap:
+                <span>{gap}</span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                step="0.1"
+                max="5"
+                value={gap}
+                onChange={(e) => setGap(Number(e.target.value))}
+              />
+            </div>
+          </>
+        )}
         <div className="slider">
           <label className="slider-header">
             Sensitivity:

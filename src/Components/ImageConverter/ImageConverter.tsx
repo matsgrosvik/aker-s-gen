@@ -2,41 +2,60 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./ImageConverter.scss";
 import Panel from "../Panel/Panel";
 
-const ImageConverter: React.FC = () => {
-  const [svgContent, setSvgContent] = useState<string>("");
-  const [size, setSize] = useState(2);
-  const [gap, setGap] = useState(1);
-  const [sensetivity, setSensetivity] = useState(35);
-  const brightness = 0.45;
-  const [inverted, setInverted] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [maxImageSize, setMaxImageSize] = useState(1000);
-  const [fileName, setFilename] = useState("");
+const blueColor = "#46A2FC";
+const greenColor = "#56A76B";
+const pineColor = "#E49249";
+const whiteColor = "#FFFEF9";
 
-  const blueColor = "#46A2FC";
-  const greenColor = "#56A76B";
-  const pineColor = "#E49249";
-  const whiteColor = "#FFFEF9";
-
-  // Color ranking: darkest to lightest (default matches current thresholds)
-  const [colorRanking, setColorRanking] = useState<string[]>([
-    greenColor,
-    blueColor,
-    pineColor,
-    whiteColor,
-  ]);
-
-  // Color dominance: percentage of brightness range each color occupies
-  // Default values match original thresholds: 44, 83, 160 out of 255
-  // Green: 0-44 (17.3%), Blue: 44-83 (15.3%), Pine: 83-160 (30.2%), White: 160-255 (37.3%)
-  const [colorDominance, setColorDominance] = useState<{
-    [key: string]: number;
-  }>({
+const DEFAULTS = {
+  size: 2,
+  gap: 1,
+  sensetivity: 35,
+  inverted: false,
+  maxImageSize: 1000,
+  colorRanking: [greenColor, blueColor, pineColor, whiteColor],
+  colorDominance: {
     [greenColor]: 17.3,
     [blueColor]: 15.3,
     [pineColor]: 30.2,
     [whiteColor]: 37.3,
-  });
+  },
+};
+
+const ImageConverter: React.FC = () => {
+  const [svgContent, setSvgContent] = useState<string>("");
+  const [size, setSize] = useState(DEFAULTS.size);
+  const [gap, setGap] = useState(DEFAULTS.gap);
+  const [sensetivity, setSensetivity] = useState(DEFAULTS.sensetivity);
+  const brightness = 0.45;
+  const [inverted, setInverted] = useState(DEFAULTS.inverted);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [maxImageSize, setMaxImageSize] = useState(DEFAULTS.maxImageSize);
+  const [fileName, setFilename] = useState("");
+  const [mode, setMode] = useState<"standard" | "creative">("standard");
+
+  // Color ranking: darkest to lightest (default matches current thresholds)
+  const [colorRanking, setColorRanking] = useState<string[]>(
+    DEFAULTS.colorRanking,
+  );
+
+  // Color dominance: percentage of brightness range each color occupies
+  const [colorDominance, setColorDominance] = useState<{
+    [key: string]: number;
+  }>(DEFAULTS.colorDominance);
+
+  const handleModeChange = (newMode: string) => {
+    setMode(newMode as "standard" | "creative");
+    if (newMode === "standard") {
+      setSize(DEFAULTS.size);
+      setGap(DEFAULTS.gap);
+      setSensetivity(DEFAULTS.sensetivity);
+      setInverted(DEFAULTS.inverted);
+      setMaxImageSize(DEFAULTS.maxImageSize);
+      setColorRanking(DEFAULTS.colorRanking);
+      setColorDominance(DEFAULTS.colorDominance);
+    }
+  };
 
   const processImage = useCallback(
     (img: HTMLImageElement) => {
@@ -225,6 +244,8 @@ const ImageConverter: React.FC = () => {
         setColorRanking={setColorRanking}
         colorDominance={colorDominance}
         setColorDominance={setColorDominance}
+        mode={mode}
+        onModeChange={handleModeChange}
         blueColor={blueColor}
         greenColor={greenColor}
         pineColor={pineColor}

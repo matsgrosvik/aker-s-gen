@@ -175,6 +175,40 @@
     word-break: break-all;
   }
 
+  .mode-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .mode-select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    background-color: #45a6ff;
+    color: #1b1f32;
+    border: 2px solid #45a6ff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231b1f32'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 20px;
+  }
+
+  .mode-select:hover {
+    background-color: #1b1f32;
+    color: white;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  }
+
   .checkbox-wrapper {
     color: white;
     display: block;
@@ -428,6 +462,19 @@
     background-color: #45a6ff;
     color: white;
     border: #1b1f32 2px solid;
+  }
+
+  .mode-select {
+    background-color: #1b1f32;
+    color: white;
+    border-color: #1b1f32;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  }
+
+  .mode-select:hover {
+    background-color: #45a6ff;
+    color: #1b1f32;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231b1f32'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
   }
 
   .slider-header {

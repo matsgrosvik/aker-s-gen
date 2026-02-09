@@ -6,7 +6,9 @@
       "outputLocation": "./build",
       "appBuildCommand": "npm run build",
       "run": "npm start",
-      "appDevserverUrl": "http://localhost:3000"
+      "appDevserverUrl": "http://localhost:3000",
+      "appName": "aker-security-brand-generator",
+      "resourceGroup": "aker-secuity-brand-generator"
     }
   }
 }
